@@ -6,7 +6,7 @@ from django.core.files import File
 
 from .models import FileModelConversion
 from .forms import FileModelConversionForm
-from .helper.helpers import file_handling_function
+from .helper.helper import file_handling_function
 
 
 
@@ -38,9 +38,11 @@ def upload_file(request):
             if file_type == 'CSV':
                 
                 # json_string is returned by the below function
-                converted_format = file_handling_function(file_name = file_name,
+                converted_format = file_handling_function(
+                                                    file_name = file_name,
                                                     file_type = file_type,
-                                                    file = uploaded_file)
+                                                    file = uploaded_file
+                                                    )
                                                     
                 response = HttpResponse(content_type='text/json')
                 response['content-Disposition'] = 'attachment; filename=converted_format.json'
@@ -72,13 +74,7 @@ def upload_file(request):
                     writer.writerow(data.values())
 
                 return response
-            # HttpResponse(converted_file, content_type='text/plain')
-            #print(converted_file)
-            
 
-            #Thereafter, we can see what to do..
-            # form = FileModelConversionForm()
-            # return render(request, 'file_converter_app/file_converter.html', {'form': form})
-    else:
+    else: 
         form = FileModelConversionForm()
     return render(request, 'file_converter_app/file_converter.html', {'form': form})
