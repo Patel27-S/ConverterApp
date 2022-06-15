@@ -1,4 +1,5 @@
 import csv
+import json
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.core.files import File
@@ -30,32 +31,46 @@ def upload_file(request):
             #                                file_type = file_type,
             #                                uploaded_file = uploaded_file,
             #                                file_description = file_description,
-            #                                converted_file = converted_file)
+            #                                )
         
             # instance.save()
             
             if file_type == 'CSV':
-
-                converted_file = file_handling_function(file_name = file_name,
+                
+                # json_string is returned by the below function
+                converted_format = file_handling_function(file_name = file_name,
                                                     file_type = file_type,
                                                     file = uploaded_file)
                                                     
                 response = HttpResponse(content_type='text/json')
                 response['content-Disposition'] = 'attachment; filename=converted_format.json'
 
-                response.write(converted_file)
+                response.write(converted_format)
 
                 return response
+
             else: # i.e. if file_type == 'JSON'
                 response = HttpResponse(content_type='text/csv')
                 response['content-Disposition'] = 'attachment; filename=converted_format.csv'
 
+
                 writer = csv.writer(response)
 
-                # Repair the below :-
-                for i in uploaded_file.read().decode('utf-8').splitlines():
-                    writer.writerow(i)
-            
+                # reading the json_data from file.
+                json_data = uploaded_file.read().decode('utf-8')
+
+                # Converting json_string into python data structure.
+                json_data = json.loads(json_data)
+
+                count = 0
+
+                for data in json_data:
+                    if count == 0:
+                        header = data.keys()
+                        writer.writerow(header)
+                        count += 1
+                    writer.writerow(data.values())
+
                 return response
             # HttpResponse(converted_file, content_type='text/plain')
             #print(converted_file)
