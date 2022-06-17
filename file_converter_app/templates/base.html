@@ -7,7 +7,10 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>File Converter App</title>
+        <title>
+            {% block title %}
+            {% endblock title %}
+        </title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
@@ -16,18 +19,8 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form.as_p}}
-            <input type='submit'>
-        </form>
-        </div>
-        
-        <br>
-        <div>
-        <a href="{% url 'file_converter_app:files_list'%}">View all the Files</a>
-        </div> 
+        {% block body  %}
+        {% endblock body  %}
         
         <script src="" async defer></script>
     </body>

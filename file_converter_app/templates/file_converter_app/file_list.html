@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Listing of all the files
+{% endblock title %}
+
+<div class='body'>
+{% block body %}
+    <h2> Listing of all the files :- </h2>
+    <div class = 'table'>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>File Name</th>
+            <th>File Type</th>
+            <th>File Description</th>
+            <th>Downloads</th>
+        </tr>
+        {% for file in files%}
+            <tr>
+                <td> {{file.id}}</td>
+                <td> {{file.file_name}}</td>
+                <td>{{file.file_type}}</td>
+                <td>{{file.file_description}}</td>
+                <td> <a href='#'>Download</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+
+    <div>
+        <a href="{% url 'file_converter_app:upload_file'%}">Back</a>
+    </div>
+{% endblock body %}
+</div>

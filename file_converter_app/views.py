@@ -3,6 +3,8 @@ import json
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.core.files import File
+from django.contrib import messages
+from django.views.generic import ListView
 
 from .models import FileModelConversion
 from .forms import FileModelConversionForm
@@ -34,8 +36,11 @@ def upload_file(request):
             #                                )
         
             # instance.save()
+
+            # message that the file is saved.
+            # messages.info(request, 'Your file is successfully saved!')
             
-            if file_type == 'CSV':
+            if file_type.lower() == 'csv':
                 
                 # json_string is returned by the below function
                 converted_format = file_handling_function(file_name = file_name,
@@ -46,6 +51,8 @@ def upload_file(request):
                 response['content-Disposition'] = 'attachment; filename=converted_format.json'
 
                 response.write(converted_format)
+
+                messages.success(request, 'Your file is successfully saved!')
 
                 return response
 
@@ -82,3 +89,10 @@ def upload_file(request):
     else:
         form = FileModelConversionForm()
     return render(request, 'file_converter_app/file_converter.html', {'form': form})
+
+
+
+class FileList(ListView):
+    model = FileModelConversion
+    context_object_name = 'files'
+    template_name = 'file_converter_app/file_list.html'
