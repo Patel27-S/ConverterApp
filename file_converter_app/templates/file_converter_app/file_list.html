@@ -22,7 +22,7 @@ Listing of all the files
                 <td> {{file.file_name}}</td>
                 <td>{{file.file_type}}</td>
                 <td>{{file.file_description}}</td>
-                <td> <a href='#'>Download</a></td>
+                <td> <a href='{% url 'file_converter_app:download_file' id=file.id %}'>Download</a></td>
             </tr>
         {% endfor %}
     </table>

@@ -29,70 +29,74 @@ def upload_file(request):
 
             # converted_file = File(converted_file)
 
-            # instance = FileModelConversion(file_name = file_name,
-            #                                file_type = file_type,
-            #                                uploaded_file = uploaded_file,
-            #                                file_description = file_description,
-            #                                )
+            instance = FileModelConversion(file_name = file_name,
+                                           file_type = file_type,
+                                           uploaded_file = uploaded_file,
+                                           file_description = file_description,
+                                           )
         
-            # instance.save()
+            instance.save()
 
-            # message that the file is saved.
-            # messages.info(request, 'Your file is successfully saved!')
-            
-            if file_type.lower() == 'csv':
-                
-                # json_string is returned by the below function
-                converted_format = file_handling_function(file_name = file_name,
-                                                    file_type = file_type,
-                                                    file = uploaded_file)
-                                                    
-                response = HttpResponse(content_type='text/json')
-                response['content-Disposition'] = 'attachment; filename=converted_format.json'
-
-                response.write(converted_format)
-
-                messages.success(request, 'Your file is successfully saved!')
-
-                return response
-
-            else: # i.e. if file_type == 'JSON'
-                response = HttpResponse(content_type='text/csv')
-                response['content-Disposition'] = 'attachment; filename=converted_format.csv'
-
-
-                writer = csv.writer(response)
-
-                # reading the json_data from file.
-                json_data = uploaded_file.read().decode('utf-8')
-
-                # Converting json_string into python data structure.
-                json_data = json.loads(json_data)
-
-                count = 0
-
-                for data in json_data:
-                    if count == 0:
-                        header = data.keys()
-                        writer.writerow(header)
-                        count += 1
-                    writer.writerow(data.values())
-
-                return response
-            # HttpResponse(converted_file, content_type='text/plain')
-            #print(converted_file)
-            
-
-            #Thereafter, we can see what to do..
-            # form = FileModelConversionForm()
-            # return render(request, 'file_converter_app/file_converter.html', {'form': form})
-    else:
-        form = FileModelConversionForm()
-    return render(request, 'file_converter_app/file_converter.html', {'form': form})
+            return render(request, 'file_converter_app/file_converter.html', 
+                          {'form': FileModelConversionForm()})
+    
+    else: # i.e. for a 'GET' request
+        return render(request, 'file_converter_app/file_converter.html',
+                      {'form':FileModelConversionForm()})
 
 
 
+# For Viewing all the files :
 class FileList(ListView):
     model = FileModelConversion
     context_object_name = 'files'
     template_name = 'file_converter_app/file_list.html'
+
+
+
+# For downloading a file.
+def download_file(request, id):
+
+    # Grabbing the instance
+    instance = FileModelConversion.objects.get(id=id)
+
+    if instance.file_type.lower() == 'csv':
+            
+        converted_format = file_handling_function(file_name = instance.file_name,
+                                            file_type = instance.file_type,
+                                            file = instance.uploaded_file)
+                                            
+        response = HttpResponse(content_type='text/json')
+        response['content-Disposition'] = 'attachment; filename=converted_format.json'
+
+        response.write(converted_format)
+
+        return response
+
+
+    else: # i.e. instance.file_type.lower() == 'json':
+        response = HttpResponse(content_type='text/csv')
+        response['content-Disposition'] = 'attachment; filename=converted_format.csv'
+
+
+        writer = csv.writer(response)
+
+        # reading the json_data from file.
+        json_data = instance.uploaded_file.read().decode('utf-8')
+
+        # Converting json_string into python data structure.
+        json_data = json.loads(json_data)
+
+        count = 0
+
+        for data in json_data:
+            if count == 0:
+                header = data.keys()
+                writer.writerow(header)
+                count += 1
+            writer.writerow(data.values())
+
+        return response
+
+
+    
