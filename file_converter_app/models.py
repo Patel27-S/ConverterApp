@@ -1,4 +1,7 @@
 from django.db import models
+from django.utils import timezone
+
+import datetime
 
 # Create your models here.
 
@@ -15,4 +18,7 @@ class FileModelConversion(models.Model):
     file_description = models.TextField(default='Hey, I am the default description :)')
     uploaded_file = models.FileField(upload_to='csv_or_json/', max_length=150)
     converted_file = models.FileField(upload_to='json_or_csv/', max_length=150, default='csv_or_json/new_one.csv')
+    created_at = models.DateField(auto_now_add = True)
+    modified_at = models.DateField(auto_now = True)
+
     

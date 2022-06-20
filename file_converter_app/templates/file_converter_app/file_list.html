@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}
-Listing of all the files
-{% endblock title %}
+{% load static %}
 
-<div class='body'>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    {% block title %}
+    Listing of all the files
+    {% endblock title %}
+</head>
+
+
 {% block body %}
+<div class='body'>
     <h2> Listing of all the files :- </h2>
     <div class = 'table'>
     <table>
@@ -14,6 +20,7 @@ Listing of all the files
             <th>File Name</th>
             <th>File Type</th>
             <th>File Description</th>
+            <th>Created At</th>
             <th>Downloads</th>
         </tr>
         {% for file in files%}
@@ -22,6 +29,7 @@ Listing of all the files
                 <td> {{file.file_name}}</td>
                 <td>{{file.file_type}}</td>
                 <td>{{file.file_description}}</td>
+                <td>{{file.created_at}}</td>
                 <td> <a href='{% url 'file_converter_app:download_file' id=file.id %}'>Download</a></td>
             </tr>
         {% endfor %}
@@ -31,5 +39,5 @@ Listing of all the files
     <div>
         <a href="{% url 'file_converter_app:upload_file'%}">Back</a>
     </div>
-{% endblock body %}
 </div>
+{% endblock body %}
