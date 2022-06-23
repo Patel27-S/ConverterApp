@@ -1,4 +1,44 @@
 .body{
-    background-color: red;
-    margin: 0 0 25px 25px;
+    /*background-color: rgb(220, 210, 210);*/
+    margin: 0 auto;
+    width:50%;
 }
+
+h2{
+    margin: 0 0 25px 0;
+    width: 50%;
+    padding-left: 240px;
+    /*background-color: yellow;*/
+}
+
+.table{
+    /* border: 0px solid grey; */
+}
+
+.table-headings .table-content{
+    margin: 0 auto;
+}
+
+.back-url{
+    margin: 0 0 150px 300px;
+    width: 10%;
+}
+
+.back-url button{
+    height: 30px;
+    width: 100px;
+}
+
+.back-url button a{
+    font-size: 15px;
+}
+
+td {    
+    
+    padding: 15px 0;
+    padding-right: 25px;
+    padding-left: 10px;
+    
+    background: white;
+  }
+ 
