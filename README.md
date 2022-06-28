@@ -1,4 +1,3 @@
----
 ## ConverterApp
 ---
     A Web Application that allows the upload of a CSV file or a JSON file. Uploading upon of which, the file gets stored in the Database.The converted version to JSON or CSV for a CSV and JSON file respectively are able to be downloaded for each of the uploaded files. 
