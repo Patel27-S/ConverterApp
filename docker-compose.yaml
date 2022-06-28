@@ -1,0 +1,31 @@
+version: "3.9"
+   
+services:
+
+  db:
+    image: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Volume to keep data alive even if the container is killed.
+    environment: # Have to set the below environment variables when using postgres database.
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  file_converter_app:
+    build:
+      context: ./
+      dockerfile: file_converter_app.Dockerfile
+    command: > # Making sure that the inside the container the app runs on 8000th port.
+        bash -c "python manage.py makemigrations 
+        && python manage.py migrate 
+        && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports: # Exposing the 8000th port to the local machine's 8000th port.
+      - "8000:8000"
+    depends_on: # Since, this image depends on the postgres image defined and configured above.
+      - db
+
+
+volumes: # Mentioning all the volumes of this particular docker-compose.yaml file
+  pgdata:
