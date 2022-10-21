@@ -4,3 +4,5 @@
 
 ## To run 
 - This project on you machine, Please clone the repo and with Docker installed on your machine, please run "docker-compose up" and the application will be running on 8000th port of your machine. 
+
+NOTE :- I have an updated version of the Application which includes the Authentication features(i.e. Users can Sign up, Login, Logout), and also they can see their uploaded files when they login, and will push it soon to GitHub.
